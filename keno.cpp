@@ -1,4 +1,4 @@
-#include <iostream>     // std::cout
+#include <iostream>     /// for std::cout
 #include <string>       // std::string
 #include <fstream>      // std::ifstream
 #include <sstream>      // std::stringstream
@@ -11,12 +11,12 @@
 
 int main(int argc, char* argv[]){
 
-    //Payout table.
+    /// Payout table.
     constexpr int MAX_PAYOUT_TAB_SIZ{15};                           //
     double payoutTable[MAX_PAYOUT_TAB_SIZ][MAX_PAYOUT_TAB_SIZ]{0};  //        
     std::string PAYOUT_TAB_FILE_PATH{"payout.dat"};                 //
 
-    // TODO: getPayoutTableData(PAYOUT_TAB_FILE_PATH,&payoutTable,MAX_PAYOUT_TAB_SIZ);
+    // TODO: Make the function getPayoutTableData(PAYOUT_TAB_FILE_PATH,&payoutTable,MAX_PAYOUT_TAB_SIZ) with the code below.
     
     std::ifstream payoutFile{ PAYOUT_TAB_FILE_PATH, std::ios::in }; // 
     std::stringstream sss;                                          //
@@ -164,6 +164,7 @@ int main(int argc, char* argv[]){
         std::cout << "], a total of "<<counterRightNumbers<<" hits out of "<<quantNumberChosen<<'\n';
         
         // Calculate the payout.
+        
         gainForTheRound = betAmount * payoutTable[quantNumberChosen-1][counterRightNumbers];
         actualAmount = actualAmount + gainForTheRound;
         //std::cout << "\nYou gained this much in this round: " << gainForTheRound << '\n';
@@ -197,7 +198,9 @@ int main(int argc, char* argv[]){
     std::cout<<"You are leaving the Keno table with $"<<actualAmount<<" dollars.\n";
    
 
-// ---- Test Printing - Payout Table----
+/** 
+ * # ---- Test Printing - Payout Table---- 
+ **/
     //std::cout << "Set of numbers as string:\t\"" << tempStringToSetOfNumbers << "\" \n";
 
     // std::cout << "\n\n\t\t\t\t\t\tPayout Table\n";

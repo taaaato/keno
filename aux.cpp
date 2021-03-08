@@ -6,25 +6,28 @@
 
 #include "aux.h"
 
+/**
+* This namespace contais auxiliar functions.
+**/
 namespace auxiliar{
 
-    // This function checks if the number is in the valid range and if it's not already added to the set. 
+
+    /**
+    *  This function checks if the number is in the valid range and if it's not already added to the set. 
+    **/
     bool validNumber(int num, std::vector<int> set, int size, int min, int max){
 
         if (num >= min & num <= max){
             if (std::find(set.begin(), set.end(), num) != set.end())
                 return false;
-            // for (int i{0};i<size;i++){
-            //     if (num == set[i]){
-            //         return false;
-            //     }
-            // }
             return true;
         }
         return false;
     }
 
-    // This function extracts the variables from the user file.
+    /**
+    * This function extracts the variables from the user file.
+    **/
     int getVariablesFromFile(std::ifstream *file, double *initCred, int *numRounds, std::string *strSetNum){
             
         // If not possible to read the file, print a error message and close program.
@@ -67,13 +70,10 @@ namespace auxiliar{
                 }
             }
         }
-        //vector istream_iterator
-        // std::cout << "cred: " << *initCred <<'\n';
-        // std::cout << "rounds: "<<*numRounds<<'\n';
-        // std::cout << "string: "<<*strSetNum<<'\n';
         return 0;
     }
 
     // This function extracts the data from the table payout file.
+    // TODO: getPayoutTableData(PAYOUT_TAB_FILE_PATH,&payoutTable,MAX_PAYOUT_TAB_SIZ)
 }
 
