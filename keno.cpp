@@ -53,17 +53,13 @@ int main(int argc, char* argv[]){
 
     std::cout<<"Preparing to read bet file ["<<filePath<<"], please wait...\n";
     std::cout<<"--------------------------------------------------\n";
-    Bet theBet = Bet();                              // Bet object.
+    
+    KenoBet theBet = KenoBet();                      // Bet object.
     //TODO: More classes.
-    
-    // Moved to a class:
-        //double initialCredit{0};                         // var1 = Initial Credit.
-        //int numberOfRounds{0};                           // var2 = Number of Rounds.
-        //std::vector<int> setOfNumbers(QUANT_NUMS);       // var 3 = Set of Numbers.
-    
-    std::cout<<"Class variable: "<<theBet.setOfNumbers[0]<<'\n';
+
     std::ifstream theFile{ filePath, std::ios::in }; // The File With the 3 Variables (var1, var2, var3).
 
+    // Constants
     constexpr int QUANT_NUMS{15};                    // Max Quantity of the Set of Numbers.
     constexpr int MIN_NUM{1};                        // Minimum Range to Set of Numbers.
     constexpr int MAX_NUM{80};                       // Maximum Range to Set of Numbers.
@@ -86,15 +82,12 @@ int main(int argc, char* argv[]){
     int tempNum{0};                                  // Temporary Int to Hold the Number for Validation.
     ss<<tempStringToSetOfNumbers;
     
-    // Initializing the vector to prevent segmentation fault.
-    theBet.setOfNumbers.push_back(0);
     while(ss){
         ss>>tempNum;
         //TODO: CHECK FOR ERROR WITH TRY CATCH.
         // Validating the number.
         if (auxiliar::validNumber(tempNum,theBet.setOfNumbers,QUANT_NUMS,MIN_NUM,MAX_NUM)){
             theBet.setOfNumbers.push_back(tempNum);
-            //setOfNumbers[quantNumberChosen] = tempNum;
             quantNumberChosen++;
         }
         if (quantNumberChosen>QUANT_NUMS-1){
@@ -113,13 +106,15 @@ int main(int argc, char* argv[]){
     std::cout << "You are going to wage a total of $" << theBet.initialCredit << " dollars.\n";
     std::cout << "Going for a total of " << theBet.numberOfRounds << " rounds, waging $"<<theBet.initialCredit/theBet.numberOfRounds<<" per round.\n\n";
     std::cout << "Your bet has "<<3<<" numbers. They are: [ ";
-    for ( int n{0}; n<QUANT_NUMS ; n++ ){
+    int len = theBet.setOfNumbers.size();
+    for ( int n{0}; n<len ; n++ ){
         if (theBet.setOfNumbers[n] != 0){
             std::cout <<theBet.setOfNumbers[n] << ' ';
         }
     }
     std::cout << "]\n";
 
+    // Printing the payout.
     std::cout << "------+---------\n";
     std::cout << "Hits\t| Payout\n";
     std::cout << "------+---------\n";
@@ -128,6 +123,7 @@ int main(int argc, char* argv[]){
     }
     std::cout<<"--------------------------------------------------\n";  
 
+    // Picking the numbers.
     std::vector<int> numberPicker(80);
     for (int z{0};z<80;z++){
         numberPicker[z] = z+1;
@@ -135,6 +131,7 @@ int main(int argc, char* argv[]){
     std::vector<int> winnerNumbers(20);
     int counterRightNumbers{0};
     double gainForTheRound{0};
+    double totalGain{0};
     double actualAmount{theBet.initialCredit};
     double betAmount{theBet.initialCredit/theBet.numberOfRounds};
 
@@ -180,10 +177,25 @@ int main(int argc, char* argv[]){
         std::cout << "Payout rate is "<<payoutTable[quantNumberChosen-1][counterRightNumbers]<<", thus you came out with: $"<<gainForTheRound<<'\n';
         std::cout << "Your net balance so far is: $"<<actualAmount<<" dollars.\n";
         std::cout<<"--------------------------------------------------\n";
+        totalGain += gainForTheRound;
         counterRightNumbers = 0;
         gainForTheRound = 0;
 
     }
+    std::cout<<"End of rounds!\n";
+    std::cout<<"--------------------------------------------------\n";
+
+    std::cout<<"\n===== SUMMARY =====\n";
+    std::cout<<"You spent in this game a total of $"<<theBet.initialCredit<<" dollars.\n";
+    if (totalGain>0){
+        std::cout<<"Hooray, you won $"<<totalGain<<" dollars. See you next time! ;-)\n";
+    }
+    else {
+        std::cout<<"You didn't won today, better luck next time! ;-)\n";
+    }
+    
+    std::cout<<"You are leaving the Keno table with $"<<actualAmount<<" dollars.\n";
+   
 
 // ---- Test Printing - Payout Table----
     //std::cout << "Set of numbers as string:\t\"" << tempStringToSetOfNumbers << "\" \n";

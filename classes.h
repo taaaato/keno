@@ -1,5 +1,5 @@
 #include <vector>
-class Bet {
+class KenoBet {
   public:
     double initialCredit;   
     int numberOfRounds;
