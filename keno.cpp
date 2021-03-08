@@ -101,7 +101,7 @@ int main(int argc, char* argv[]){
     }
 
     std::cout << "You are going to wage a total of $" << initialCredit << " dollars.\n";
-    std::cout << "Going for a total of " << numberOfRounds << " rounds, waging $"<<initialCredit/numberOfRounds<<" per round.\n";
+    std::cout << "Going for a total of " << numberOfRounds << " rounds, waging $"<<initialCredit/numberOfRounds<<" per round.\n\n";
     std::cout << "Your bet has "<<3<<" numbers. They are: [ ";
     for ( int n{0}; n<QUANT_NUMS ; n++ ){
         if (setOfNumbers[n] != 0){
@@ -112,10 +112,11 @@ int main(int argc, char* argv[]){
 
     std::cout << "------+---------\n";
     std::cout << "Hits\t| Payout\n";
+    std::cout << "------+---------\n";
     for ( int o{0}; o<=quantNumberChosen; o++ ){
         std::cout <<o<<"\t| "<<payoutTable[quantNumberChosen-1][o]<<'\n';
     }
-    std::cout << "------+---------\n";
+    std::cout<<"--------------------------------------------------\n";  
     
 
 // --------------------------------------------------
@@ -138,42 +139,54 @@ int main(int argc, char* argv[]){
     double gainForTheRound{0};
     double actualAmount{initialCredit};
     double betAmount{initialCredit/numberOfRounds};
+
+// ROUNDS
+    
     for (int round(1);round<=numberOfRounds;round++){
-        std::cout << "ROUND "<<round<<"\n";
+        
+        std::cout << "This is round #"<<round<<" of "<<numberOfRounds<<", and your wage is $"<<betAmount<<". Good luck!\n";
         // Shuffle the numberPicker.
         std::random_shuffle(numberPicker.begin(), numberPicker.end());
+        //TODO: Find out why the random numbers are always the same.
 
         // Copy first 20 shuffled numbers to winnerNumbers.
         for(int k{0}; k < 20; k++) {
             winnerNumbers[k] = numberPicker[k];
         }
-        std::cout << "\nWinner numbers: ";
+        std::cout << "The hits are: [ ";
         for (int z{0};z<QUANT_NUMS;z++){
             std::cout << winnerNumbers[z] << ' ';
         }
+        std::cout << "]\n\n";
 
         // Check how many numbers in setOfNUmbers are in winnerNumbers and save the count to rightNumbers.
-        std::cout << "\nFound Number(s): ";
+        std::cout << "You hit the following number(s) [ ";
         for(int l{0}; l < QUANT_NUMS; l++) {
             if (std::count(winnerNumbers.begin(), winnerNumbers.end(), setOfNumbers[l])){
                 std::cout << setOfNumbers[l]<<' ';
                 counterRightNumbers++;
             }
         }
+        std::cout << "], a total of "<<counterRightNumbers<<" hits out of "<<quantNumberChosen<<'\n';
 
-        std::cout << "\nYou guessed this many nºs right: " << counterRightNumbers << '\n';   
+
         
         // Calculate the payout.
-        gainForTheRound = betAmount * payoutTable[quantNumberChosen-1][counterRightNumbers-1];
+        gainForTheRound = betAmount * payoutTable[quantNumberChosen-1][counterRightNumbers];
         actualAmount = actualAmount + gainForTheRound;
-        std::cout << "\nYou gained this much in this round: " << gainForTheRound << '\n';
-        std::cout << "You have this in total now: " << actualAmount << '\n';      
-        std::cout << "\n--------------\n";
-        counterRightNumbers = 0;
-        gainForTheRound = 0;
+        //std::cout << "\nYou gained this much in this round: " << gainForTheRound << '\n';
+        //std::cout << "You have this in total now: " << actualAmount << '\n';      
+        //std::cout << "\n--------------\n";
+
         for (int m{0};m<20;m++){
             winnerNumbers[m] = 0;
         }
+
+        std::cout << "Payout rate is "<<payoutTable[quantNumberChosen-1][counterRightNumbers]<<", thus you came out with: $"<<gainForTheRound<<'\n';
+        std::cout << "Your net balance so far is: $"<<actualAmount<<" dollars.\n";
+        std::cout<<"--------------------------------------------------\n";
+        counterRightNumbers = 0;
+        gainForTheRound = 0;
 
     }
 
