@@ -1,6 +1,7 @@
 #include <vector>
 /**
  * This class models the information given by the user.
+ * IMPORTANT: THE CLASS IS NOT EXACTLY AS SPECIFIED ON THE ASSIGNMENT YET.
  */
 class KenoBet {
   public:
