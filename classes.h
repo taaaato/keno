@@ -5,7 +5,9 @@
  */
 class KenoBet {
   public:
-    double initialCredit;           //!< Initial Credits Available to the User.
-    int numberOfRounds;             //!< Number of Rounds the User Wishes to Play.
-    std::vector<int> setOfNumbers;  //!< Numbers Chosen by the User.
+    double m_initial_credit;           //!< Initial Credits Available to the User.
+    int m_number_of_rounds;            //!< Number of Rounds the User Wishes to Play.
+    std::vector<int> _set_of_numbers;  //!< Numbers Chosen by the User.
+
+    //TODO: Getters and Setters.
 };

@@ -28,7 +28,7 @@ namespace auxiliar{
     /**
     * This function extracts the variables from the user file.
     **/
-    int getVariablesFromFile(std::ifstream *file, double *initCred, int *numRounds, std::string *strSetNum){
+    int getVariablesFromFile(std::ifstream *file, double &initCred, int *numRounds, std::string *strSetNum){
             
         // If not possible to read the file, print a error message and close program.
         if (!*file)
@@ -50,7 +50,7 @@ namespace auxiliar{
             else{
                 // First valid line = Initial credit.
                 if (counterOfLines==1){
-                    *initCred = std::stod(tempString);
+                    initCred = std::stod(tempString);
                     //TODO: CHECK FOR ERROR WITH TRY CATCH
                     counterOfLines++;
                     tempString = "";

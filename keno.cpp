@@ -54,21 +54,21 @@ int main(int argc, char* argv[]){
     std::cout<<"Preparing to read bet file ["<<filePath<<"], please wait...\n";
     std::cout<<"--------------------------------------------------\n";
     
-    KenoBet theBet = KenoBet();                      // Bet object.
+    KenoBet theBet = KenoBet();                      //!< Bet object.
     //TODO: More classes.
 
-    std::ifstream theFile{ filePath, std::ios::in }; // The File With the 3 Variables (var1, var2, var3).
+    std::ifstream theFile{ filePath, std::ios::in }; //!< The File With the 3 Variables (var1, var2, var3).
 
     // Constants
-    constexpr int QUANT_NUMS{15};                    // Max Quantity of the Set of Numbers.
-    constexpr int MIN_NUM{1};                        // Minimum Range to Set of Numbers.
-    constexpr int MAX_NUM{80};                       // Maximum Range to Set of Numbers.
+    constexpr int QUANT_NUMS{15};                    //!< Max Quantity of the Set of Numbers.
+    constexpr int MIN_NUM{1};                        //!< Minimum Range to Set of Numbers.
+    constexpr int MAX_NUM{80};                       //!< Maximum Range to Set of Numbers.
     
-    std::string tempStringToSetOfNumbers{};          // Temporary STRING to Help Parse the Numbers
-    int errorStatus{0};                              // Error Status From the Function that Gets the Variables. 0 = Ok. 1 = Error reading the file.
+    std::string tempStringToSetOfNumbers{};          //!< Temporary STRING to Help Parse the Numbers
+    int errorStatus{0};                              //!< Error Status From the Function that Gets the Variables. 0 = Ok. 1 = Error reading the file.
 
     // Getting the variables from the file.
-    errorStatus = auxiliar::getVariablesFromFile(&theFile, &theBet.initialCredit, &theBet.numberOfRounds, &tempStringToSetOfNumbers);
+    errorStatus = auxiliar::getVariablesFromFile(&theFile, theBet.m_initial_credit, &theBet.m_number_of_rounds, &tempStringToSetOfNumbers);
     // Closing the file.
     theFile.close();                                 
     if (errorStatus == 1){
@@ -77,17 +77,17 @@ int main(int argc, char* argv[]){
     }
     
     // Getting and validating the set of numbers.
-    std::stringstream ss;                            // Temporary STREAM to Help Parse the Numbers.                 
-    int quantNumberChosen{0};                        // Auxiliar Counter for While Loop.
-    int tempNum{0};                                  // Temporary Int to Hold the Number for Validation.
+    std::stringstream ss;                            //!< Temporary STREAM to Help Parse the Numbers.                 
+    int quantNumberChosen{0};                        //!< Auxiliar Counter for While Loop.
+    int tempNum{0};                                  //!< Temporary Int to Hold the Number for Validation.
     ss<<tempStringToSetOfNumbers;
     
     while(ss){
         ss>>tempNum;
         //TODO: CHECK FOR ERROR WITH TRY CATCH.
         // Validating the number.
-        if (auxiliar::validNumber(tempNum,theBet.setOfNumbers,QUANT_NUMS,MIN_NUM,MAX_NUM)){
-            theBet.setOfNumbers.push_back(tempNum);
+        if (auxiliar::validNumber(tempNum,theBet._set_of_numbers,QUANT_NUMS,MIN_NUM,MAX_NUM)){
+            theBet._set_of_numbers.push_back(tempNum);
             quantNumberChosen++;
         }
         if (quantNumberChosen>QUANT_NUMS-1){
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]){
         }
     }
 
-    if (theBet.setOfNumbers.size()>0){
+    if (theBet._set_of_numbers.size()>0){
         std::cout<<"Bet successfully read!\n";
     }
     else {
@@ -103,13 +103,13 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    std::cout << "You are going to wage a total of $" << theBet.initialCredit << " dollars.\n";
-    std::cout << "Going for a total of " << theBet.numberOfRounds << " rounds, waging $"<<theBet.initialCredit/theBet.numberOfRounds<<" per round.\n\n";
+    std::cout << "You are going to wage a total of $" << theBet.m_initial_credit << " dollars.\n";
+    std::cout << "Going for a total of " << theBet.m_number_of_rounds << " rounds, waging $"<<theBet.m_initial_credit/theBet.m_number_of_rounds<<" per round.\n\n";
     std::cout << "Your bet has "<<3<<" numbers. They are: [ ";
-    int len = theBet.setOfNumbers.size();
+    int len = theBet._set_of_numbers.size();
     for ( int n{0}; n<len ; n++ ){
-        if (theBet.setOfNumbers[n] != 0){
-            std::cout <<theBet.setOfNumbers[n] << ' ';
+        if (theBet._set_of_numbers[n] != 0){
+            std::cout <<theBet._set_of_numbers[n] << ' ';
         }
     }
     std::cout << "]\n";
@@ -132,13 +132,13 @@ int main(int argc, char* argv[]){
     int counterRightNumbers{0};
     double gainForTheRound{0};
     double totalGain{0};
-    double actualAmount{theBet.initialCredit};
-    double betAmount{theBet.initialCredit/theBet.numberOfRounds};
+    double actualAmount{theBet.m_initial_credit};
+    double betAmount{theBet.m_initial_credit/theBet.m_number_of_rounds};
 
 // ROUNDS
-    for (int round(1);round<=theBet.numberOfRounds;round++){
+    for (int round(1);round<=theBet.m_number_of_rounds;round++){
         
-        std::cout << "This is round #"<<round<<" of "<<theBet.numberOfRounds<<", and your wage is $"<<betAmount<<". Good luck!\n";
+        std::cout << "This is round #"<<round<<" of "<<theBet.m_number_of_rounds<<", and your wage is $"<<betAmount<<". Good luck!\n";
         // Shuffle the numberPicker.
         std::random_shuffle(numberPicker.begin(), numberPicker.end());
         //TODO: Find out why the random numbers are always the same.
@@ -156,8 +156,8 @@ int main(int argc, char* argv[]){
         // Check how many numbers in setOfNUmbers are in winnerNumbers and save the count to rightNumbers.
         std::cout << "You hit the following number(s) [ ";
         for(int l{0}; l < QUANT_NUMS; l++) {
-            if (std::count(winnerNumbers.begin(), winnerNumbers.end(), theBet.setOfNumbers[l])){
-                std::cout << theBet.setOfNumbers[l]<<' ';
+            if (std::count(winnerNumbers.begin(), winnerNumbers.end(), theBet._set_of_numbers[l])){
+                std::cout << theBet._set_of_numbers[l]<<' ';
                 counterRightNumbers++;
             }
         }
@@ -187,7 +187,7 @@ int main(int argc, char* argv[]){
     std::cout<<"--------------------------------------------------\n";
 
     std::cout<<"\n===== SUMMARY =====\n";
-    std::cout<<"You spent in this game a total of $"<<theBet.initialCredit<<" dollars.\n";
+    std::cout<<"You spent in this game a total of $"<<theBet.m_initial_credit<<" dollars.\n";
     if (totalGain>0){
         std::cout<<"Hooray, you won $"<<totalGain<<" dollars. See you next time! ;-)\n";
     }
